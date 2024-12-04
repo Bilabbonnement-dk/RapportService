@@ -10,7 +10,7 @@ cursor.execute('DROP TABLE IF EXISTS Rapport')
 cursor.execute('''
 CREATE TABLE IF NOT EXISTS Rapport (
     RapportID INTEGER PRIMARY KEY AUTOINCREMENT,
-    Indkomst FLOAT,
+    Sammenlagt_Pris FLOAT,
     Antal_Udlejede_Biler INTEGER,
     RapportDato DATE
 )
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS Rapport (
 conn.commit()
 # Insert dummy data into the table
 cursor.execute('''
-INSERT INTO Rapport (RapportID, Indkomst, Antal_Udlejede_Biler, RapportDato)
+INSERT INTO Rapport (RapportID, Sammenlagt_Pris, Antal_Udlejede_Biler, RapportDato)
 VALUES
 (1, 1000000, 80, '2022-01-01'),
 (2, 1400000, 100, '2023-02-15'),
