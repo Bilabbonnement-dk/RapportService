@@ -49,3 +49,13 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_1073959dffb3456296844e702a6ca404 }}
         images: 'index.docker.io/${{ secrets.AzureAppService_ContainerUsername_663fe7508be14951891c3cedc4eb4124 }}/rapport_service:${{ github.sha }}'
+
+    - name: Add environment variable to Azure App Service
+      uses: Azure/CLI@v1
+      with:
+        azcliversion: 2.30.0
+        inlineScript: |
+          az webapp config appsettings set \
+            --name rapportService \
+            --resource-group <RESOURCE_GROUP_NAME> \
+            --settings LEJEAFTALE_SERVICE_URL=http://lejeaftaleservice-cqa6f7hgc8b0f6ek.northeurope-01.azurewebsites.net
