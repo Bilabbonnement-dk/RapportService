@@ -57,5 +57,5 @@ jobs:
         inlineScript: |
           az webapp config appsettings set \
             --name rapportService \
-            --resource-group <RESOURCE_GROUP_NAME> \
+            --resource-group Exam_Resources \
             --settings LEJEAFTALE_SERVICE_URL=http://lejeaftaleservice-cqa6f7hgc8b0f6ek.northeurope-01.azurewebsites.net
