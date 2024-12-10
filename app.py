@@ -17,11 +17,13 @@ db_path = os.path.join(script_dir, 'Database/rapport.db')
 rented_cars = []
 total_price = 0
 
+lejeaftale_url = os.getenv("LEJEAFTALE_SERVICE_URL", "http://localhost:5002")
+
 @app.route('/udlejedeBiler', methods=['GET'])
 def udlejedeBiler():
     global rented_cars
     global total_price
-    lejeaftale_response = requests.get("http://lejeaftaleservice-cqa6f7hgc8b0f6ek.northeurope-01.azurewebsites.net/lejeaftale")
+    lejeaftale_response = requests.get(f"{lejeaftale_url}/lejeaftale")
     if lejeaftale_response.status_code != 200:
         return jsonify({"error": "Failed to fetch data from Lejeaftale microservice"}), 500
     
