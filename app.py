@@ -35,7 +35,7 @@ def udlejedeBiler():
         kunde_id = car['KundeID']
         total_price = car['AbonnementsVarighed'] * car['PrisPrMåned']
         
-        status_response = requests.get(f"http://lejeaftaleservice-cqa6f7hgc8b0f6ek.northeurope-01.azurewebsites.net/status/{bil_id}")
+        status_response = requests.get(f"{lejeaftale_url}/status/{bil_id}")
         if status_response.status_code == 200 and status_response.json().get('status') == 'Aktiv':
                 rented_cars.append({
                     "bil_id": bil_id,
