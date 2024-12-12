@@ -5,8 +5,9 @@ FROM python:3.9-slim
 WORKDIR /app
 
 # Copy alle filer i den mappe hvor min Dockerfile er til /app mappen i mit image
-COPY . /app
-
+COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-CMD ["python3", "app.py"]
+COPY . .
+
+CMD ["python3", "app.py","gunicorn", "--bind", "0.0.0.0:80", "app:app"]

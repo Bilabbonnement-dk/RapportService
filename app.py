@@ -19,6 +19,24 @@ total_price = 0
 
 lejeaftale_url = os.getenv("LEJEAFTALE_SERVICE_URL", "http://localhost:5002")
 
+@app.route('/')
+def home():
+    return jsonify({
+        "service": "API Gateway",
+        "available_endpoints": [
+            {
+                "path": "/udlejedeBiler",
+                "method": "GET",
+                "description": "Get a list of rented cars and the total price sum"
+            },
+            {
+                "path": "/gemUdlejedeBiler",
+                "method": "POST",
+                "description": "Save the count of rented cars and the total price sum"
+            }
+        ]
+    })
+
 @app.route('/udlejedeBiler', methods=['GET'])
 def udlejedeBiler():
     global rented_cars
