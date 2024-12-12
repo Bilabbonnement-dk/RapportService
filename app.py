@@ -30,6 +30,7 @@ def udlejedeBiler():
     lejeaftale_data = lejeaftale_response.json()
 
     rented_cars= []
+    total_price_sum = 0
     for car in lejeaftale_data:
         bil_id = car['BilID']
         kunde_id = car['KundeID']
@@ -42,8 +43,9 @@ def udlejedeBiler():
                     "kunde_id": kunde_id,
                     "total_price": total_price
                 })
+                total_price_sum += total_price
     
-    return jsonify({"rented_cars": rented_cars}), 201
+    return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 201
 
 @app.route('/gemUdlejedeBiler', methods=['POST'])
 def gemUdlejedeBiler():
