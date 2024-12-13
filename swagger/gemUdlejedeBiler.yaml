@@ -1,0 +1,29 @@
+tags:
+  - name: Gem udlejede biler
+summary: Save the count of rented cars and the total price sum
+description: Save the count of rented cars and the total price sum
+responses:
+  201:
+    description: Rented cars count and total price saved
+    schema:
+      type: object
+      properties:
+        message:
+          type: string
+          example: "Rented cars count and total price saved"
+  400:
+    description: No rented cars to save
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "No rented cars to save"
+  500:
+    description: Failed to save rented cars count and total price
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Failed to save rented cars count and total price"

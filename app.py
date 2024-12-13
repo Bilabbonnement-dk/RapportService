@@ -8,8 +8,11 @@ import requests
 import os
 import sqlite3
 import datetime
+from flasgger import Swagger, swag_from
+from swagger.config import swagger_config
 
 app = Flask(__name__)
+swagger = Swagger(app, config=swagger_config)
 
 script_dir = os.path.dirname(os.path.abspath(__file__))
 db_path = os.path.join(script_dir, 'Database/rapport.db')
@@ -20,6 +23,7 @@ total_price = 0
 lejeaftale_url = os.getenv("LEJEAFTALE_SERVICE_URL", "http://localhost:5002")
 
 @app.route('/')
+@swag_from('swagger/home.yaml')
 def home():
     return jsonify({
         "service": "API Gateway",
@@ -38,6 +42,7 @@ def home():
     })
 
 @app.route('/udlejedeBiler', methods=['GET'])
+@swag_from('swagger/udlejedeBiler.yaml')
 def udlejedeBiler():
     global rented_cars
     global total_price
@@ -66,6 +71,7 @@ def udlejedeBiler():
     return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 201
 
 @app.route('/gemUdlejedeBiler', methods=['POST'])
+@swag_from('swagger/gemUdlejedeBiler.yaml')
 def gemUdlejedeBiler():
     global rented_cars
     global total_price

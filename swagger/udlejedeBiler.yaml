@@ -1,0 +1,37 @@
+tags:
+  - name: Udlejede biler
+summary: Get a list of rented cars and the total price sum
+description: Get a list of rented cars and the total price sum
+responses:
+  200:
+    description: Successful response
+    schema:
+      type: object
+      properties:
+        rented_cars:
+          type: array
+          items:
+            type: object
+            properties:
+              bil_id:
+                type: integer
+                example: 1
+              kunde_id:
+                type: integer
+                example: 101
+              total_price:
+                type: number
+                format: float
+                example: 5000.0
+        total_price_sum:
+          type: number
+          format: float
+          example: 15000.0
+  500:
+    description: Failed to fetch data from Lejeaftale microservice
+    schema:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Failed to fetch data from Lejeaftale microservice"
