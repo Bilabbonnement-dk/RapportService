@@ -15,4 +15,4 @@ swagger_config = {
 }
 def init_swagger(app):
     """Initialize Swagger with the given Flask app"""
-    return Swagger(app, config=swagger_config, template=template)
+    return Swagger(app, config=swagger_config)
