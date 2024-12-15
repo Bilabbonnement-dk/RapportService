@@ -48,6 +48,16 @@ def home():
         "service": "API Gateway",
         "available_endpoints": [
             {
+                "path": "/login",
+                "method": "POST",
+                "description": "Login to get JWT token"
+            },
+            {
+                "path": "/protected",
+                "method": "GET",
+                "description": "Access protected resource"
+            },
+            {
                 "path": "/udlejedeBiler",
                 "method": "GET",
                 "description": "Get a list of rented cars and the total price sum"
@@ -56,12 +66,23 @@ def home():
                 "path": "/gemUdlejedeBiler",
                 "method": "POST",
                 "description": "Save the count of rented cars and the total price sum"
+            },
+            {
+                "path": "/process-skade-niveau/<int:damage_niveau>",
+                "method": "GET",
+                "description": "Get specific damage data by niveau"
+            },
+            {
+                "path": "/export-skadet-biler",
+                "method": "GET",
+                "description": "Export damaged cars data as CSV"
             }
         ]
     })
 
 # Login endpoint
 @app.route('/login', methods=['POST'])
+@swag_from('swagger/login.yaml')
 def login():
     data = request.get_json()
     if not data:
@@ -82,6 +103,7 @@ def login():
 # Protected resource
 @app.route('/protected', methods=['GET'])
 @jwt_required()
+@swag_from('swagger/protected.yaml')
 def protected():
     result, status_code = get_logged_in_user()
     return jsonify(result), status_code
@@ -139,6 +161,7 @@ def gemUdlejedeBiler():
 @app.route('/process-skade-niveau/', methods=['GET'])  # No damage_niveau, get all data
 @app.route('/process-skade-niveau/<int:damage_niveau>', methods=['GET'])  # With damage_niveau, get specific data
 @jwt_required()
+@swag_from('swagger/processSkadeNiveau.yaml')
 def process_niveau(damage_niveau=None):  # Make damage_niveau optional
     report_data, report_status_code = fetch_damaged_cars(damage_niveau)
 
@@ -151,6 +174,7 @@ def process_niveau(damage_niveau=None):  # Make damage_niveau optional
 
 @app.route('/export-skadet-biler', methods=['GET'])
 @jwt_required()
+@swag_from('swagger/exportSkadetBiler.yaml')
 def export_damaged_cars():
     try:
         # Fetch damaged car data
