@@ -3,10 +3,10 @@ from flask import jsonify
 
 
 ######### url for Skades Service #########
-SKADES_SERVICE_URL = "http://localhost:5001"
+SKADES_SERVICE_URL = "http://localhost:5002"
 
 ####### url for Lejeaftale Service #######
-LEJEAFTALE_SERVICE_URL = "http://localhost:5002"
+LEJEAFTALE_SERVICE_URL = "http://localhost:5003"
 
 
 DAMAGE_NIVEAU_TO_MONTHS = {
