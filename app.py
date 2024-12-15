@@ -22,6 +22,7 @@ from Services.cars import fetch_rented_cars
 from Services.damages import fetch_damaged_cars
 from Services.generateCSV import generate_csv
 from Services.generateCSV import get_damaged_car_data
+from Services.cars import fetch_rented_cars_and_price
 
 app = Flask(__name__)
 swagger = Swagger(app, config=swagger_config)
@@ -86,35 +87,21 @@ def protected():
     result, status_code = get_logged_in_user()
     return jsonify(result), status_code
 
-# Fetch rented cars
+# Fetch rented cars and total price
 @app.route('/udlejedeBiler', methods=['GET'])
 @swag_from('swagger/udlejedeBiler.yaml')
 def udlejedeBiler():
-    global rented_cars
-    global total_price
-    lejeaftale_response = requests.get(f"{lejeaftale_url}/lejeaftale")
-    if lejeaftale_response.status_code != 200:
-        return jsonify({"error": "Failed to fetch data from Lejeaftale microservice"}), 500
-    
-    lejeaftale_data = lejeaftale_response.json()
 
-    rented_cars= []
-    total_price_sum = 0
-    for car in lejeaftale_data:
-        bil_id = car['BilID']
-        kunde_id = car['KundeID']
-        total_price = car['AbonnementsVarighed'] * car['PrisPrMåned']
-        
-        status_response = requests.get(f"{lejeaftale_url}/status/{bil_id}")
-        if status_response.status_code == 200 and status_response.json().get('status') == 'Aktiv':
-                rented_cars.append({
-                    "bil_id": bil_id,
-                    "kunde_id": kunde_id,
-                    "total_price": total_price
-                })
-                total_price_sum += total_price
+    rented_cars, error_message = fetch_rented_cars_and_price()
+
+    if error_message:
+        return jsonify({"error": error_message}), 500
+
+    total_price_sum = sum(car['total_price'] for car in rented_cars)
     
-    return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 201
+    return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 200
+
+
 
 @app.route('/gemUdlejedeBiler', methods=['POST'])
 @swag_from('swagger/gemUdlejedeBiler.yaml')
