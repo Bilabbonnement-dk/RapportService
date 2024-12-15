@@ -2,7 +2,7 @@ import requests
 from flask import jsonify
 
 ######### url for Lejeaftale Service #########
-LEJEAFTALE_SERVICE_URL = "http://localhost:5002"
+LEJEAFTALE_SERVICE_URL = "http://localhost:5003"
 
 # Fetches the list of rented cars by communicating with the Lejeaftale microservice.
 def fetch_rented_cars():
