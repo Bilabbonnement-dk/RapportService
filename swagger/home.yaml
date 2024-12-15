@@ -1,0 +1,27 @@
+tags:
+  - name: Root endpoint documentation
+summary: Home
+description: Get API documentation
+responses:
+  200:
+    description: Successful response
+    schema:
+      type: object
+      properties:
+        service:
+          type: string
+          example: "API Gateway"
+        available_endpoints:
+          type: array
+          items:
+            type: object
+            properties:
+              path:
+                type: string
+                example: "/udlejedeBiler"
+              method:
+                type: string
+                example: "GET"
+              description:
+                type: string
+                example: "Get a list of rented cars and the total price sum"
