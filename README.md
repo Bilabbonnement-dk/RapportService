@@ -116,7 +116,7 @@ Rapport Service er en RESTful microservice, bygget med Flask og er integreret me
 
 ## Generel information
 
-* Base URL: `http://localhost:5001/
+* Base URL: `http://localhost:5001/`
 * Autentifikation: De fleste endpoints kræver en JWT-token, som kan fås ved at logge ind med `/login`.
 * Format: Alt data sendes og modtages i JSON-format.
 * Swagger Dokumentation: Endpoints er dokumenteret med Swagger og kan findes på `/swagger`.
@@ -136,8 +136,8 @@ En JWT er en kompakt, sikker token, som bruges til at autentificere og autoriser
 ### Sådan får du en JWT-token:
 Brug `/login` endpointet med følgende JSON-payload:
 
+**POST /login**
 ```json
-POST /login
 {
   "email": "test@test.com",
   "password": "password123"
