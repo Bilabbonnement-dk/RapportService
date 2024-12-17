@@ -27,12 +27,12 @@ Rapport Service er en mikroservice designet til at hjælpe forretningsudviklere 
 
 1. Autentificering med JWT: Login og adgang til beskyttede ressourcer via JSON Web Tokens.
 2. Dataindsamling fra Lejeaftale Service:
-  * Hent data om lejede biler og beregn den samlede pris.
-  * Gem data om lejede biler i en lokal SQLite-database.
+     * Hent data om lejede biler og beregn den samlede pris.
+     * Gem data om lejede biler i en lokal SQLite-database.
 3. Dataindsamling fra Skades Service:
-  * Hent data om beskadigede biler og beregn økonomiske tab baseret på skadeniveau.
-4. CSV-eksport:
-  * Eksporter data om beskadigede biler og tab i CSV-format.
+     * Hent data om beskadigede biler og beregn økonomiske tab baseret på skadeniveau.
+5. CSV-eksport:
+     * Eksporter data om beskadigede biler og tab i CSV-format.
 
 ---
 
