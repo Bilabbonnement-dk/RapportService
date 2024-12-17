@@ -17,8 +17,9 @@ Rapport Service er en mikroservice designet til at hjælpe forretningsudviklere 
     3. [Hent lejeaftaler](#hent-lejeaftaler)
     4. [Eksporter skades data som CSV](#eksporter-skades-data-som-CSV)
     5. [Flere endpoints](#flere-endpoints)
-9. [Testing](#testing)
-10. [Kontakt](#kontakt)
+9. [Swagger](#swagger)
+10. [Testing](#testing)
+11. [Kontakt](#kontakt)
 
 
 ## Funktionalitet
