@@ -22,7 +22,7 @@ from Services.cars import fetch_rented_cars
 from Services.damages import fetch_damaged_cars
 from Services.generateCSV import generate_csv
 from Services.generateCSV import get_damaged_car_data
-from Services.cars import fetch_rented_cars_and_price
+
 
 app = Flask(__name__)
 swagger = Swagger(app, config=swagger_config)
@@ -40,7 +40,7 @@ db_path = os.path.join(script_dir, 'Database/rapport.db')
 rented_cars = []
 total_price = 0
 
-lejeaftale_url = os.getenv("LEJEAFTALE_SERVICE_URL", "http://localhost:5002")
+lejeaftale_url = os.getenv("LEJEAFTALE_SERVICE_URL", "http://localhost:5003")
 
 @app.route('/')
 @swag_from('swagger/home.yaml')
@@ -111,21 +111,40 @@ def protected():
 
 # Fetch rented cars and total price
 @app.route('/udlejedeBiler', methods=['GET'])
+@jwt_required()
 @swag_from('swagger/udlejedeBiler.yaml')
 def udlejedeBiler():
-
-    rented_cars, error_message = fetch_rented_cars_and_price()
-
-    if error_message:
-        return jsonify({"error": error_message}), 500
-
-    total_price_sum = sum(car['total_price'] for car in rented_cars)
+    global rented_cars
+    global total_price
+    lejeaftale_response = requests.get(f"{lejeaftale_url}/lejeaftale")
+    if lejeaftale_response.status_code != 200:
+        return jsonify({"error": "Failed to fetch data from Lejeaftale microservice"}), 500
     
-    return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 200
+    lejeaftale_data = lejeaftale_response.json()
+    print(lejeaftale_data)
+
+    rented_cars= []
+    total_price_sum = 0
+    for car in lejeaftale_data:
+        bil_id = car['BilID']
+        kunde_id = car['KundeID']
+        total_price = car['AbonnementsVarighed'] * car['PrisPrMåned']
+        
+        status_response = requests.get(f"{lejeaftale_url}/status/{bil_id}")
+        if status_response.status_code == 200 and status_response.json().get('status') == 'Aktiv':
+                rented_cars.append({
+                    "bil_id": bil_id,
+                    "kunde_id": kunde_id,
+                    "total_price": total_price
+                })
+                total_price_sum += total_price
+    
+    return jsonify({"rented_cars": rented_cars, "total_price_sum": total_price_sum}), 201
 
 
 
 @app.route('/gemUdlejedeBiler', methods=['POST'])
+@jwt_required()
 @swag_from('swagger/gemUdlejedeBiler.yaml')
 def gemUdlejedeBiler():
     global rented_cars

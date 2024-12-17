@@ -61,7 +61,6 @@ def calculate_loss(damaged_cars, car_prices, damage_niveau_to_months):
 def fetch_damaged_cars(damage_niveau=None):
     # Fetch damage data from Skades Service
     try:
-        # If damage_niveau is None, fetch all data
         if damage_niveau is None:
             url = f"{SKADES_SERVICE_URL}/send-skade-data"
         else:
@@ -73,19 +72,24 @@ def fetch_damaged_cars(damage_niveau=None):
             return {"error": "The requested resource was not found in Skades Service."}, 404
 
         damaged_cars = damage_response.json()
-
     except (requests.RequestException, ValueError) as e:
         return {"error": f"Error while fetching Skades data: {e}"}, 500
 
     # Fetch price data from Lejeaftale Service
     try:
         price_response = requests.get(f"{LEJEAFTALE_SERVICE_URL}/process-pris-data")
+        print("Raw price response:", price_response.status_code, price_response.json())  # Debugging
+        
         if price_response.status_code not in [200, 201]:
             return {"error": f"Failed to fetch data from Lejeaftale Service. Status code: {price_response.status_code}"}, 500
 
-        # Parse the price data response
-        price_data = price_response.json()
+        # Extract the price data
+        price_data = price_response.json().get("price_data", [])
+        print("Extracted price data:", price_data)  # Debugging
+
+        # Convert price data to a dictionary
         car_prices = {str(item["bil_id"]): item["pris_pr_måned"] for item in price_data if "bil_id" in item}
+        print("Car Prices Dictionary:", car_prices)  # Debugging
 
     except (requests.RequestException, ValueError) as e:
         return {"error": f"Error while fetching Lejeaftale data: {e}"}, 500
@@ -96,10 +100,8 @@ def fetch_damaged_cars(damage_niveau=None):
     # Calculate losses for all damaged cars
     losses = calculate_loss(damaged_cars, car_prices, DAMAGE_NIVEAU_TO_MONTHS)
 
-    # Return all relevant data
     return {
         "damaged_cars": damaged_cars,
         "car_prices": car_prices,
         "losses": losses
     }, 200
-
