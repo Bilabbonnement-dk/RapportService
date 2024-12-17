@@ -204,4 +204,4 @@ def export_damaged_cars():
     except Exception as e:
         return jsonify({"error": f"An unexpected error occurred: {str(e)}"}), 500
 
-app.run(debug=True, host='0.0.0.0', port=5001)
+app.run(debug=True, host='0.0.0.0', port=80)
