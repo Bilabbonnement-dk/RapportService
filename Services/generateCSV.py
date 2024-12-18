@@ -27,17 +27,17 @@ def generate_csv(report_data, losses):
     output = io.StringIO()
     writer = csv.writer(output)
 
-    # Write CSV headers
+    # Writes CSV headers
     writer.writerow(["BilID", "SkadeNiveau", "Loss"])
 
-    # Write rows by combining report_data with losses
+    # Writes the rows by combining report_data with losses
     for car in report_data:
         bil_id = car.get("bil_id")
         damage_level = car.get("skade_niveau")
         loss = next((l.get("Loss") for l in losses if l.get("BilID") == bil_id), 0)
         writer.writerow([bil_id, damage_level, loss])
 
-    # Reset pointer and return CSV content
+    # Resets pointer and return CSV content
     output.seek(0)
     csv_content = output.getvalue()
     output.close()
