@@ -32,15 +32,15 @@ def calculate_loss(damaged_cars, car_prices, damage_niveau_to_months):
         bil_id = car.get("bil_id")
         damage_niveau = car.get("skade_niveau")
 
-        # Skip entries with missing car_id or invalid SkadeNiveau
+        # Skip entries with missing car_id or not valid SkadeNiveau
         if bil_id is None or damage_niveau is None:
             print(f"Skipping car with missing BilID or SkadeNiveau: {car}")
             continue
 
-        # If SkadeNiveau is None, you can set a default value or skip
+        # If SkadeNiveau is none it sets a default value or skips
         if damage_niveau is None:
             print(f"Skipping car with null SkadeNiveau: {car}")
-            continue  # Skip the car with no damage level (if that's what you want)
+            continue  
 
         # Determine the months out of service for the damage level
         months_out_of_service = damage_niveau_to_months.get(damage_niveau, 0)
@@ -78,18 +78,18 @@ def fetch_damaged_cars(damage_niveau=None):
     # Fetch price data from Lejeaftale Service
     try:
         price_response = requests.get(f"{LEJEAFTALE_SERVICE_URL}/process-pris-data")
-        print("Raw price response:", price_response.status_code, price_response.json())  # Debugging
+        print("Raw price response:", price_response.status_code, price_response.json())
         
         if price_response.status_code not in [200, 201]:
             return {"error": f"Failed to fetch data from Lejeaftale Service. Status code: {price_response.status_code}"}, 500
 
         # Extract the price data
         price_data = price_response.json().get("price_data", [])
-        print("Extracted price data:", price_data)  # Debugging
+        print("Extracted price data:", price_data) 
 
         # Convert price data to a dictionary
         car_prices = {str(item["bil_id"]): item["pris_pr_måned"] for item in price_data if "bil_id" in item}
-        print("Car Prices Dictionary:", car_prices)  # Debugging
+        print("Car Prices Dictionary:", car_prices)  
 
     except (requests.RequestException, ValueError) as e:
         return {"error": f"Error while fetching Lejeaftale data: {e}"}, 500
