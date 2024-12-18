@@ -1,6 +1,7 @@
 """
     Rapport Service:
-    Håndterer...
+    Håndterer hentning af data fra LejeaftaleService og SkadeService, 
+    som den behandler og indsætter i databasen eller exportere til csv fil, til forretningsmæssige formål.
 """
 
 from flask import Flask, jsonify, request
