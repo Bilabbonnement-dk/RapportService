@@ -164,7 +164,7 @@ def gemUdlejedeBiler():
     return jsonify({"message": "Rented cars saved"}), 201
 
 # Fetch damage niveau
-@app.route('/process-skade-niveau/', methods=['GET'])  # No damage_niveau, get all data
+@app.route('/process-skade-niveau/', methods=['GET'])  # If no damage_niveau, get all data
 @app.route('/process-skade-niveau/<int:damage_niveau>', methods=['GET'])  # With damage_niveau, get specific data
 @jwt_required()
 @swag_from('swagger/processSkadeNiveau.yaml')
